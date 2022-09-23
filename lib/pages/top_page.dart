@@ -17,6 +17,11 @@ class TopPage extends StatefulWidget {
 class _TopPageState extends State<TopPage> {
   final memoCollection = FirebaseFirestore.instance.collection('memo');
 
+  Future<void> deleteMemo(String id) async{
+    final doc = FirebaseFirestore.instance.collection('memo').doc(id);
+    await doc.delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +47,7 @@ class _TopPageState extends State<TopPage> {
                 detail: data['detail'],
                 createdDate: data['createdDate'],
                 updatedDate: data['updatedDate'],
+                id: docs[index].id,
               );
               return ListTile(
                 title: Text(fetchMemo.title),
@@ -62,8 +68,9 @@ class _TopPageState extends State<TopPage> {
                               title: const Text('編集'),
                             ),
                             ListTile(
-                              onTap: () {
-
+                              onTap: () async{
+                                await deleteMemo(fetchMemo.id);
+                                Navigator.pop(context);
                               },
                               leading: const Icon(Icons.delete),
                               title: const Text('削除'),

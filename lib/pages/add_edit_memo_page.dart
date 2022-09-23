@@ -23,6 +23,24 @@ class _AddEditMemoPageState extends State<AddEditMemoPage> {
     });
   }
 
+  Future<void> updateMemo() async{
+    final doc = FirebaseFirestore.instance.collection('memo').doc(widget.currentMemo!.id);
+    await doc.update({
+      'title': titleController.text,
+      'detail': detailController.text,
+      'updatedDate': Timestamp.now()
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.currentMemo != null) {
+      titleController.text = widget.currentMemo!.title;
+      detailController.text = widget.currentMemo!.detail;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +90,11 @@ class _AddEditMemoPageState extends State<AddEditMemoPage> {
               child: ElevatedButton(
                 onPressed: () async{
                   //メモを作成する処理を記述
-                  await createMemo();
+                  if(widget.currentMemo == null) {
+                    await createMemo();
+                  } else {
+                    await updateMemo();
+                  }
                   Navigator.pop(context);
                 },
                 child: Text(widget.currentMemo == null ? '追加' : '更新'),
