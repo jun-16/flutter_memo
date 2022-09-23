@@ -45,6 +45,34 @@ class _TopPageState extends State<TopPage> {
               );
               return ListTile(
                 title: Text(fetchMemo.title),
+                trailing: IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(context: context, builder: (context) {
+                      return SafeArea(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              onTap: () {
+
+                              },
+                              leading: const Icon(Icons.edit),
+                              title: const Text('編集'),
+                            ),
+                            ListTile(
+                              onTap: () {
+
+                              },
+                              leading: const Icon(Icons.delete),
+                              title: const Text('削除'),
+                            )
+                          ],
+                        ),
+                      );
+                    });
+                  },
+                  icon: const Icon(Icons.edit),
+                ),
                 onTap: () {
                   //確認画面に遷移する記述を書く
                   Navigator.push(context, MaterialPageRoute(
