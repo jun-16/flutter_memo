@@ -29,7 +29,7 @@ class _TopPageState extends State<TopPage> {
         title: const Text('Flutter × Firebase'),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: memoCollection.snapshots(),
+        stream: memoCollection.orderBy('createdDate', descending: true).snapshots(),
         builder: (context, snapshot) {
           if(snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
